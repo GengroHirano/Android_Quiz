@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Quiz</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string-array name="AnserString">
+        <item>蝶</item>
+        <item>鶴</item>
+        <item>龍</item>
+        <item>花</item>
+        <item>鳥</item>
+        <item>竜</item>
+        <item>獅</item>
+        <item>馬</item>
+        <item>魚</item>
+        <item>仮</item>
+    </string-array>
+    <string name="max_q">10</string>
+    <string name="current_q">0</string>
+    <string name="divid">  /  </string>
+
+</resources>

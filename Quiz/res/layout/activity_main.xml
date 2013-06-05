@@ -1,0 +1,91 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity" >
+
+    <TextView
+        android:id="@+id/CurrentQ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="@string/current_q"
+        android:layout_alignParentTop="true" />
+    
+    <TextView
+        android:id="@+id/div"
+        android:layout_toRightOf="@+id/CurrentQ"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/divid"
+        android:textSize="16sp" />
+    
+    <TextView
+        android:id="@+id/MaxQ"
+        android:text="@string/max_q"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" 
+        android:textSize="16sp"
+        android:layout_toRightOf="@+id/div"/>
+
+    <ImageView
+        android:id="@+id/Quiz"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_below="@+id/CurrentQ"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/i004" />
+
+    <LinearLayout
+        android:id="@+id/qG"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Quiz"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/q1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="buttonClick"
+            android:tag="1" />
+
+        <Button
+            android:id="@+id/q2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="buttonClick"
+            android:tag="2" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/qG"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/q3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="buttonClick"
+            android:tag="3" />
+
+        <Button
+            android:id="@+id/q4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="buttonClick"
+            android:tag="4" />
+    </LinearLayout>
+
+</RelativeLayout>

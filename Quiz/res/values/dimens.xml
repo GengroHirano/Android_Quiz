@@ -1,0 +1,19 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <integer-array name="imageValues">
+        <item>@drawable/i001</item>
+        <item>@drawable/i002</item>
+        <item>@drawable/i003</item>
+        <item>@drawable/i004</item>
+        <item>@drawable/i005</item>
+        <item>@drawable/i006</item>
+        <item>@drawable/i007</item>
+        <item>@drawable/i008</item>
+        <item>@drawable/i009</item>
+        <item>@drawable/i010</item>
+    </integer-array>
+
+</resources>
