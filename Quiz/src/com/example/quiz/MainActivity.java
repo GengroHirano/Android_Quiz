@@ -23,15 +23,17 @@ public class MainActivity extends Activity {
 	TextView current ;
 	Random rand ; //乱数
 	
-	String[] anserArray ;//答えの文字配列
+	String[] answerArray ;//答えの文字配列
+	String[] selfAnswer ; //自分の答え
 	TypedArray array ; //何でも配列(イメージの配列をまずコレで取得する)
 	
 	int max ; //総問題数
 	int imageRes[] ; //イメージのリソース配列	
-	int anser ; //答え
+	int answer ; //答え
 	int currentQ ; //現在何問目か保存する
 	int[] randArray ; //ランダム配列
 	int randvalue ; //問題用ランダム変数
+	boolean[] errata ; //正誤情報
 	
 	@SuppressLint("Recycle")
 	@Override
@@ -45,7 +47,7 @@ public class MainActivity extends Activity {
 		for(int i = 0; i < imageRes.length; i++){
 			imageRes[i] = array.getResourceId(i, 0) ;
 		}
-		anserArray = getResources().getStringArray(R.array.AnserString) ;
+		answerArray = getResources().getStringArray(R.array.AnserString) ;
 
 		button[0] = (Button)findViewById(R.id.q1) ;
 		button[1] = (Button)findViewById(R.id.q2) ;
@@ -53,7 +55,14 @@ public class MainActivity extends Activity {
 		button[3] = (Button)findViewById(R.id.q4) ;
 		current = (TextView)findViewById(R.id.CurrentQ) ;
 		
+		reset() ;
+
+	}
+
+	public void reset(){
 		randArray = new int[max] ;
+		selfAnswer = new String[max] ;
+		errata = new boolean[max] ;
 		int i = 0 ;
 		while( i < max - 1 ){
 			rand = new Random() ;
@@ -68,9 +77,8 @@ public class MainActivity extends Activity {
 		currentQ = 1 ;
 		current.setText( Integer.toString(currentQ) ) ;
 		setQ(currentQ) ;
-
 	}
-
+	
 	public void setQ(int current){
 		if(current > max){
 			Log.v("問題", "終わってる") ;
@@ -80,9 +88,15 @@ public class MainActivity extends Activity {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
+					//ここら辺で次の画面を作るために必要なResultListItemに必要なリストを作っておく
 					Intent intent = new Intent(MainActivity.this, ResultActivity.class) ;
-					//ここら辺に正誤を渡すとしよう
-					startActivity(intent) ;
+					//ここら辺に正誤情報、出題問題の配列、リソースの配列、答えの文字配列を渡す
+					intent.putExtra("Errata", errata) ;
+					intent.putExtra("RandomArray", randArray) ; //出題問題の配列
+					intent.putExtra("Resource", imageRes) ; //リソース
+					intent.putExtra("Answer", answerArray) ; //答えの文字列
+					intent.putExtra("SelfAnswer", selfAnswer) ; //自分の答え
+					startActivityForResult(intent, 123) ;
 				}
 			}) ;
 			alert.show() ;
@@ -90,16 +104,16 @@ public class MainActivity extends Activity {
 		}
 		
 		ImageView image = (ImageView)findViewById(R.id.Quiz) ;
-		anser = randArray[current - 1] ; //答え保存
-		image.setImageResource(imageRes[anser]) ;
+		answer = randArray[current - 1] ; //答え保存
+		image.setImageResource(imageRes[answer]) ;
 		
 		//ボタンの文字重複を避けるために値を保存しておく配列
 		String[] anserOverlap = new String[button.length] ;
 		//------答えを４つあるボタンのどこかに配置------//
 		randvalue = rand.nextInt(button.length) ;
-		button[randvalue].setText( anserArray[anser] );
+		button[randvalue].setText( answerArray[answer] );
 		int anserposition = randvalue ; //答えの位置を記録
-		anserOverlap[anserposition] = anserArray[anser] ; //重複防止用配列に答えをセット
+		anserOverlap[anserposition] = answerArray[answer] ; //重複防止用配列に答えをセット
 		//---------------------------------------//
 		
 		//-------答え以外のボタンに文字をセット-------//
@@ -111,8 +125,8 @@ public class MainActivity extends Activity {
 				i++ ;
 				continue ;
 			}
-			if( checkOverlap(anserOverlap, anserArray[randvalue]) ){ //重複チェック
-				button[i].setText( anserArray[randvalue] );
+			if( checkOverlap(anserOverlap, answerArray[randvalue]) ){ //重複チェック
+				button[i].setText( answerArray[randvalue] );
 				anserOverlap[i] = button[i].getText().toString() ; //セットした問題を格納
 				i++ ;
 			}
@@ -148,15 +162,31 @@ public class MainActivity extends Activity {
 	public void buttonClick (View v){
 		Button button = (Button)v ;
 		String push = button.getText().toString() ;
-		if(push.equals(anserArray[anser])){
+		selfAnswer[currentQ - 1] = push ;
+		if(push.equals(answerArray[answer])){
 			Toast.makeText(this, "正解！", Toast.LENGTH_SHORT).show() ;
+			errata[currentQ - 1] = true ;
 		}
 		else{
 			Toast.makeText(this, "不正解だアホめ！", Toast.LENGTH_SHORT).show() ;
+			errata[currentQ - 1] = false ;
 		}
 		currentQ++;
-		current.setText( Integer.toString(currentQ) ) ;
+		if(currentQ <= max){
+			current.setText( Integer.toString(currentQ) ) ;
+		}
 		setQ(currentQ) ;
 	}
-
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		//初期化
+		currentQ = 0 ;
+		randArray = null ;
+		errata = null ;
+		selfAnswer = null ;
+		
+		reset() ;
+	}
 }
